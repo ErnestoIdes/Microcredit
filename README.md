@@ -32,7 +32,7 @@ The Loan Management software is a web-based application that helps manage and tr
 Please follow carefully the installation and use of this web framework of the Loan Management System for better utilisation of it. Do not skip any stage.
 
 ```bash
-1. git clone https://github.com/chandachewe10/loan-management-system.git
+1. git clone ****
 2. composer install --no-scripts
 3. copy .env.example .env
 4. php artisan config:clear
