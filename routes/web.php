@@ -11,7 +11,6 @@ use App\Http\Controllers\RolesUsersController;
 use App\Http\Controllers\LoanApprovalsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\loanapp;
-use App\Http\Controllers\RegisteredUsersController;
 use App\Http\Controllers\RemindersController;
 use App\Http\Controllers\LoanHistoryController;
 use App\Http\Controllers\AdminDashboardController;
@@ -20,6 +19,13 @@ use App\Http\Controllers\TodaysPaymentsController;
 use App\Http\Controllers\MissedPaymentsController;
 use App\Http\Controllers\AdminsProfileController;
 use App\Http\Controllers\CustomerProfileController;
+
+use App\Http\Controllers\RegisteredUsersController;
+use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LoansController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +37,90 @@ use App\Http\Controllers\CustomerProfileController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+ Route::get('user_login','App\Http\Controllers\Auth\LoginController@index');
+ Route::post('user_login','App\Http\Controllers\Auth\LoginController@login');
+ Route::post('user_logout','App\Http\Controllers\Auth\LoginController@logout');
+    
+## Regisered Users - CRUD - 
+// Route::resource('users', RegisteredUsersController::class);
+// ->middleware('auth','permission:can-view-registered-users');     
+
+Route::namespace('App\Http\Controllers')->prefix('users')->middleware(['auth'])->group(function () {
+     Route::get('index','RegisteredUsersController@index')->name("users.index");
+    Route::get('show/{user_id}','RegisteredUsersController@show')->name("users.show");
+    Route::get('list','RegisteredUsersController@list')->name('users.list');
+    Route::get('register','RegisteredUsersController@create')->name("users.register");
+
+    Route::post('store', 'RegisteredUsersController@store')->name("users.store");
+    // Route::get('logout', 'Auth\AuthController@getLogout');
+    Route::get('edit/{user_id}','RegisteredUsersController@edit')->name('users.edit');
+    Route::get('update/{user_id}','RegisteredUsersController@update')->name('users.update');
+    Route::get('delete/{user_id}','RegisteredUsersController@delete')->name('users.delete');
+    Route::get('active/{user_id}','RegisteredUsersController@active')->name('users.active');
+    Route::get('profile','RegisteredUsersController@profile')->name('users.profile');
+
+});
+
+
+Route::namespace('App\Http\Controllers')->prefix('clients')->middleware(['auth'])->group(function () {
+    Route::get('index','ClientsController@index')->name("clients.index");
+    Route::get('show/{user_id}','ClientsController@show')->name("clients.show");
+    Route::get('list','ClientsController@list')->name('clients.list');
+    Route::get('register','ClientsController@create')->name("clients.register");
+
+    Route::post('store', 'ClientsController@store')->name("clients.store");
+    Route::get('edit/{user_id}','ClientsController@edit')->name('clients.edit');
+    Route::get('update/{user_id}','ClientsController@update')->name('clients.update');
+    Route::get('delete/{user_id}','ClientsController@delete')->name('clients.delete');
+    Route::get('active/{user_id}','ClientsController@active')->name('clients.active');
+    Route::get('profile','ClientsController@profile')->name('clients.profile');
+
+});
+
+Route::namespace('App\Http\Controllers')->prefix('loans')->middleware(['auth'])->group(function () {
+     Route::get('index','LoansController@index')->name("loans.index");
+    // Route::get('show/{user_id}','RegisteredUsersController@show')->name("users.show");
+    // Route::get('list','RegisteredUsersController@list')->name('users.list');
+    Route::get('create/{user_id}','LoansController@create')->name("loans.create");
+
+    Route::post('store', 'LoansController@store')->name("loans.store");
+    // // Route::get('logout', 'Auth\AuthController@getLogout');
+    // Route::get('edit/{user_id}','RegisteredUsersController@edit')->name('users.edit');
+    // Route::get('update/{user_id}','RegisteredUsersController@update')->name('users.update');
+    // Route::get('delete/{user_id}','RegisteredUsersController@delete')->name('users.delete');
+    // Route::get('active/{user_id}','RegisteredUsersController@active')->name('users.active');
+    // Route::get('profile','RegisteredUsersController@profile')->name('users.profile');
+
+    
+    ## Retrieve all loans via AJAX 
+    Route::get('/all_applied_loans', 'LoansController@loan_history')->name('all_applied_loans'); 
+
+});
+
+
+
+// Route::group(['prefix' => 'clients'], function () {
+//     Route::get('index','App\Http\Controllers\ClientsController@index')->name("clients.index");
+//     Route::get('show/{user_id}','App\Http\Controllers\ClientsController@show')->name("clients.show");
+//     Route::get('list','App\Http\Controllers\ClientsController@list')->name('clients.list');
+//     Route::get('register','App\Http\Controllers\ClientsController@create')->name("clients.register");
+
+//     Route::post('store', 'App\Http\Controllers\ClientsController@store')->name("clients.store");
+//     // Route::get('logout', 'Auth\AuthController@getLogout');
+//     Route::get('edit/{user_id}','App\Http\Controllers\ClientsController@edit')->name('clients.edit');
+//     Route::get('update/{user_id}','App\Http\Controllers\ClientsController@update')->name('clients.update');
+//     Route::get('delete/{user_id}','App\Http\Controllers\ClientsController@delete')->name('clients.delete');
+//     Route::get('active/{user_id}','App\Http\Controllers\ClientsController@active')->name('clients.active');
+//     Route::get('profile','App\Http\Controllers\ClientsController@profile')->name('clients.profile');
+// });
+
+//populator routes
+Route::get('provinces', 'App\Http\Controllers\ProvinceController@getProvinces')->name('get.provinces');
+Route::get('districts/{province_id}', 'App\Http\Controllers\DistrictController@getDistricts')->name('get.districts');
+
+
+
 ## Call the signature View
 Route::get('/signature', function(){
     return view('ClientSignature.create'); 
@@ -135,12 +225,6 @@ Route::post('approve_or_denie', [loanapp::class, 'approve'])
 ->middleware('auth','permission:can-approve-loan-applications')->name('approve_or_denie');
 
 
-    
-## Regisered Users - CRUD - 
-Route::resource('users', RegisteredUsersController::class)
-->middleware('auth','permission:can-view-registered-users');     
-
-
 ## Retrieve all regisitered users via AJAX 
 Route::get('/users-all', [RegisteredUsersController::class, 'all_users'])
 ->middleware('auth','permission:can-view-registered-users')
@@ -149,13 +233,13 @@ Route::get('/users-all', [RegisteredUsersController::class, 'all_users'])
 
 ## Active Loans
 Route::get('active-loans', [ActiveLoansController::class,'index'])
-->middleware('auth','permission:can-view-active-loans')     
+// ->middleware('auth','permission:can-view-active-loans')     
 ->name('active_loans');
 
 
 ## Retrieve all active loans via AJAX 
 Route::get('/active-all', [ActiveLoansController::class, 'active_loans'])
-->middleware('auth','permission:can-view-active-loans')
+// ->middleware('auth','permission:can-view-active-loans')
 ->name('all_active_loans'); 
 
 
@@ -217,8 +301,7 @@ Route::get('roles_users_remove', [RolesUsersController::class,'remove'])
 ## Revoke Roles From Users - 
 Route::post('roles_users_revoke', [RolesUsersController::class,'revoke'])
 ->middleware('auth','permission:can-revoke-roles')
-->name('roles_users.revoke'); 
-
+->name('roles_users.revoke');
 
 
 ## Loan Approvals - DLO
@@ -234,7 +317,7 @@ Route::resource('reminders', RemindersController::class)
 
 ## Download Compressed Loan Agreement Forms
 Route::get('downloading_loan_agreement_forms', [loanapp::class,'downloadZip'])
-->middleware('auth','permission:can-view-loan-agreement-forms')
+// ->middleware('auth','permission:can-view-loan-agreement-forms')
 ->name('downloading_loan_agreement_forms'); 
 
 
@@ -277,10 +360,7 @@ Route::get('loan-history', [LoanHistoryController::class,'index'])
 ->name('loan_history');
 
 
-## Retrieve all loans via AJAX 
-Route::get('/all_applied_loans', [LoanHistoryController::class, 'loan_history'])
-->middleware('auth')
-->name('all_applied_loans'); 
+
 
 
 
@@ -353,9 +433,9 @@ Route::get('all_missed_payments', [MissedPaymentsController::class,'missed_payme
 
 
 ## Admins Profile
-Route::get('admins_profile', [AdminsProfileController::class,'index'])
-->middleware('auth','permission:can-check-their-profile')
-->name('admin_profile');  
+// Route::get('admins_profile', [AdminsProfileController::class,'index'])
+// ->middleware('auth','permission:can-check-their-profile')
+// ->name('admin_profile');  
 
 
 ## Admin Change Password
@@ -397,11 +477,6 @@ Route::post('customer_store_password', [CustomerProfileController::class,'store'
 Route::fallback(function () {
     return view('Whoops!!!! this link does not exist');
 });
-
-
-
-
-
 
 
 Route::get('/', function () {

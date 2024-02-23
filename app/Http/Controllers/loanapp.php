@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\ref_payment_mode;
 use App\Models\ref_town_mst;
 use App\Models\reg_employee_attachment;
-use App\Models\reg_employee_mst;
+
 use App\Models\transactionHistory;
 use App\Models\emailsubscription;
 use App\Models\SettlementForms;
@@ -28,6 +28,10 @@ use App\Notifications\denie;
 use App\Models\Approvals;
 use Illuminate\Support\Facades\Notification;
 use DataTables;
+
+
+use App\Models\user;
+
 class loanapp extends Controller
 {
 
@@ -41,9 +45,11 @@ class loanapp extends Controller
      */
     
 public function loanapplication($id){
-    $profileclient=reg_employee_mst::find(decrypt($id));
-    $employeeData=reg_employee_mst::where('email',"=",$profileclient->email)->firstOrFail();
-    $refPaymentMode=ref_payment_mode::all();
+    // $profileclient=user::find(decrypt($id));
+    $profileclient=user::find("5658ada0-80a2-4376-8ef7-67f2851f541d");
+    $employeeData=user::where('email',"=",$profileclient->email)->firstOrFail();
+    // $refPaymentMode=ref_payment_mode::all();
+    $refPaymentMode="";
     return view('loanapplication', compact('profileclient','employeeData','refPaymentMode'));
   
 } 

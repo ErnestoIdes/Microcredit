@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\Province;
 use App\Models\Bank;
-use App\Models\Wallet;
+// use App\Models\Wallet;
+use App\Models\Document_Type;
+use App\Models\Document;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Password;
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 use DataTables;
 use DateTime;
-class RegisteredUsersController extends Controller
+class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,17 +32,18 @@ class RegisteredUsersController extends Controller
 
     public function index()
     {
+         // return "";
 
         // $users = Users::select(['id', 'firstname', 'lastname', 'email', 'created_at', DB::raw('IF(deleted_at IS NOT NULL, true, false) AS is_deleted')])->get();
             // return $users;
 
             // ,  DB::raw('IF(deleted_at IS NOT NULL, true, false) AS is_deleted')
-    return view('users.users');    
+    return view('clients/clients');    
     }
 
     public function list()
     {
-        
+
         $users = User::withTrashed()
         ->where('microcredit_id',1)
         ->select(['id','code', 'firstname', 'lastname', 'email', 'created_at', DB::raw('IF(deleted_at IS NOT NULL, "Deleted", "Active") AS is_deleted')]);
@@ -48,15 +51,15 @@ class RegisteredUsersController extends Controller
         return DataTables::of($users)
             ->addColumn('action', function ($user) {
                   $op= "<div class='table-actions'>
-                    <a href='" . route('users.show', $user->id) . "' class='show-employee cursure-pointer'><i class='fas fa-eye text-primary'></i></a>";
+                    <a href='" . route('clients.show', $user->id) . "' class='show-employee cursure-pointer'><i class='fas fa-eye text-primary'></i></a>";
 
-                    // $op .= "<a href='" . route('users.edit', $user->id) . "'><i class='fas fa-pencil text-dark'></i></a>";
+                    // $op .= "<a href='" . route('clients.edit', $user->id) . "'><i class='fas fa-pencil text-dark'></i></a>";
 
                         if ($user->is_deleted=="Deleted") {
-                            $op .= "<a  href='" . route('users.active',  $user->id) . "' class='fa fa-trash text-success fa-lg'  '>&#x1F5D1;</a>";
+                            $op .= "<a  href='" . route('clients.active',  $user->id) . "' class='fa fa-trash text-success fa-lg'  '>&#x1F5D1;</a>";
                         }
                         if ($user->is_deleted=="Active") {
-                            $op .= "<a data-toggle='modal' data-target='#confirmationModal'   data-url='" . route('users.delete',  $user->id) . "' class='fa fa-trash text-danger fa-lg'  '>&#x1F5D1;</a>";
+                            $op .= "<a data-toggle='modal' data-target='#confirmationModal'   data-url='" . route('clients.delete',  $user->id) . "' class='fa fa-trash text-danger fa-lg'  '>&#x1F5D1;</a>";
                         }
 
                     $op .= "</div>";
@@ -73,12 +76,13 @@ class RegisteredUsersController extends Controller
     {
         $provinces = Province::select('id','name','short')->get();
         $banks = Bank::select('id','name')->get();
-        $wallet = Wallet::select('id','name')->get();
-        return view('clients.registration',compact('provinces','banks','wallet'));        
+        $document_type = Document_Type::select('id','name')->get();
+        // $wallet = Wallet::select('id','name')->get();
+        return view('clients.registration',compact('provinces','banks','document_type'));    
     }
     public function profile(){
 
-        return view('users.profile');
+        return view('clients.profile');
     }
     
 
@@ -210,19 +214,47 @@ class RegisteredUsersController extends Controller
 
         $user->bank_id = $request->bank_id;
         $user->bank_account_no = $request->bank_account_no;
-        $user->mobile_wallet_id = $request->mobile_wallet_id;
+         // $user->mobile_wallet_id = $request->mobile_wallet_id;
+
+         $user->type = "Client";
 
         $user->payment_method = $request->payment_method;
 
-        $user->type = "Employee";
-
         $user->microcredit_id = $microcredit_id;
         $user->created_by_id = $created_by_id;  
-        $user->password = bcrypt("password");      
-            
+        $user->password = bcrypt("password"); 
         $user->save();  
 
-         return redirect('/users/index');
+
+
+        // Document
+         $documents = $request->file('documents');
+         $document_type = $request->document_type;
+
+      
+
+         for ($i=0; $i <sizeof($documents) ; $i++) { 
+
+            $new_name=substr($request->firstname, 0, 1).date('s').date('m');
+
+
+            $file=$documents[$i];
+            $filename = $documents[$i]->getClientOriginalName();
+
+            $file->move(public_path('documents'), $new_name."_".$filename);
+
+             $doc =  Document::create([             
+                'user_id' => $user->id,
+                'name' => $new_name."_".$filename,
+                'document_type_id' => $document_type[$i]
+             
+            ]);
+             
+           
+         }
+
+          return redirect('/clients/index');
+
     }
 
     protected function validateUser(array $data)
@@ -245,7 +277,7 @@ class RegisteredUsersController extends Controller
     
     {
         //
-        return view('users.show',[
+        return view('clients.show',[
        'user' => user::find($user_id)
         ]);
     }
@@ -259,7 +291,7 @@ class RegisteredUsersController extends Controller
     public function edit($user)
     {
         //
-       return view('users.edit',[
+       return view('clients.edit',[
         'employee' => user::find($user)
        ]);
     }
@@ -293,8 +325,7 @@ class RegisteredUsersController extends Controller
             'bank_account_number' => 'required|string',
             'bank_account_name' => 'required|string',
             'mobile_money_number' => 'required|string',
-            'mobile_money_name' => 'required|string',
-            
+            'mobile_money_name' => 'required|string',            
         ]);
         //
        

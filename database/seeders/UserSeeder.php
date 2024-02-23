@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\api_logins_mst;
-use App\Models\reg_employee_mst;
+// use App\Models\api_logins_mst;
+use App\Models\user;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -19,55 +21,44 @@ class UserSeeder extends Seeder
         /* create admin, author and user */
         /* password for these users is password */
 
-        $factoryUsers = [
-            [
-                'firstname' => 'super-admin',
-                'lastname' => 'administrator',
-                'nrc' => '123456789',
-                'dob' => '10/10/1990',
-                'email' => 'admin@admin.com',
-                'password' => '$2y$10$dD8yarAAR8v75qt7ekre1utGJE7dA0PS2Ge5FLX9OkPxVBzMIBAcC', // test1234
-                'role' => 'super-admin'
-            ],
+        // $factoryUsers = [
+        //     [
+        //         'firstname' => 'Ernesto',
+        //         'lastname' => 'Simango',
+        //         'gender' => 'Male',
+        //         'marital_status' => 'Single',
+        //         'is_blacklisted' => false,
+        //         'province_id' => 1,
+        //         'district_id' => 1,
+        //         'address' => 'guava-Marracuene',
+        //         'email' => 'neto.sima@gmail.com',
+        //         'phone' => '842983939',                
+        //         'microcredit_id' => 1,                
+        //         'password' => '$2y$10$dD8yarAAR8v75qt7ekre1utGJE7dA0PS2Ge5FLX9OkPxVBzMIBAcC', // test1234
+             
+        //     ],
 
           
+        // ];
 
-            [
-                'firstname' => 'chief financial officer',
-                'lastname' => 'cfo',
-                'nrc' => '123456189',
-                'dob' => '10/10/1990',
-                'email' => 'cfo@cfo.com',
-                'password' => '$2y$10$dD8yarAAR8v75qt7ekre1utGJE7dA0PS2Ge5FLX9OkPxVBzMIBAcC', // test1234
-                'role' => 'cfo'
-            ],
-
-            [
-                'firstname' => 'divisional loan officer',
-                'lastname' => 'dlo',
-                'nrc' => '123456121',
-                'dob' => '10/10/1990',
-                'email' => 'dlo@dlo.com',
-                'password' => '$2y$10$dD8yarAAR8v75qt7ekre1utGJE7dA0PS2Ge5FLX9OkPxVBzMIBAcC', // test1234
-                'role' => 'dlo'
-            ],
-        ];
-
-        foreach ($factoryUsers as $user) {
-            $newUser =  reg_employee_mst::create([
-                'firstname' => $user['firstname'],
-                'lastname' => $user['lastname'],
-                'email' => $user['email'],
-                'nrc' => $user['nrc'],
-                'dob' => $user['dob'],
+        // foreach ($factoryUsers as $user) {
+            $newUser =  user::create([
+                'firstname' => 'Ernesto',
+                'lastname' => 'Simango',
+                'gender' => 'Male',
+                'marital_status' => 'Single',
+                'is_blacklisted' => false,
+                'province_id' => 1,
+                'district_id' => 1,
+                'address' => 'guava-Marracuene',
+                'email' => 'neto.sima@gmail.com',
+                'phone' => '842983939',                
+                'microcredit_id' => 1,                
+                'password' => bcrypt("password"), // password
+             
             ]);
 
-            $new =  api_logins_mst::create([
-                'nrc' => $user['nrc'],
-                'password' => $user['password'],
-                'employee_id' => reg_employee_mst::where('email',"=",$user['email'])->first()->employee_id
-            ]);
-            $newUser->assignRole($user['role']);
-        }
+           
+        // }
     }
 }

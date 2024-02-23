@@ -16,14 +16,19 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="/user_login">
             @csrf
+            @error('login')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
 
             <!-- NRC Number -->
             <div>
-                <x-label for="email" :value="__('NRC Number')" />
+                <x-label for="email" :value="__('')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="text" name="nrc"  required autofocus />
+                <x-input id="login" class="block mt-1 w-full" type="text" name="login"  required autofocus />
             </div>
 
             <!-- Password -->
