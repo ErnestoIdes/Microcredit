@@ -23,6 +23,10 @@ class Loan extends Model
         'created_by_id'
     ];
 
+       protected $casts = [
+    'id' => 'string'
+];
+
 // Override boot method to generate UUID for primary key
     protected static function boot()
     {

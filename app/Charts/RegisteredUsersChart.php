@@ -3,7 +3,7 @@
 namespace App\Charts;
 
 use ArielMejiaDev\LarapexCharts\LarapexChart;
-use App\Models\reg_employee_mst;
+use App\Models\User;
 class RegisteredUsersChart
 {
     protected $users;
@@ -19,40 +19,40 @@ class RegisteredUsersChart
         // Civil Servants
 
         // January
-        $januaryUsers = reg_employee_mst::whereMonth('created_dt', '=', 1)->whereYear('created_dt', '=', date('Y'))->count();
+        $januaryUsers = User::whereMonth('created_at', '=', 1)->whereYear('created_at', '=', date('Y'))->count();
         
         // February
-        $februaryUsers = reg_employee_mst::whereMonth('created_dt', '=', 2)->whereYear('created_dt', '=', date('Y'))->count();
+        $februaryUsers = User::whereMonth('created_at', '=', 2)->whereYear('created_at', '=', date('Y'))->count();
         
         // March
-        $marchUsers = reg_employee_mst::whereMonth('created_dt', '=', 3)->whereYear('created_dt', '=', date('Y'))->count();
+        $marchUsers = User::whereMonth('created_at', '=', 3)->whereYear('created_at', '=', date('Y'))->count();
         
         // April
-        $aprilUsers = reg_employee_mst::whereMonth('created_dt', '=', 4)->whereYear('created_dt', '=', date('Y'))->count();
+        $aprilUsers = User::whereMonth('created_at', '=', 4)->whereYear('created_at', '=', date('Y'))->count();
         
         // May
-        $mayUsers = reg_employee_mst::whereMonth('created_dt', '=', 5)->whereYear('created_dt', '=', date('Y'))->count();
+        $mayUsers = User::whereMonth('created_at', '=', 5)->whereYear('created_at', '=', date('Y'))->count();
         
         // June
-        $juneUsers = reg_employee_mst::whereMonth('created_dt', '=', 6)->whereYear('created_dt', '=', date('Y'))->count();
+        $juneUsers = User::whereMonth('created_at', '=', 6)->whereYear('created_at', '=', date('Y'))->count();
         
         // July
-        $julyUsers = reg_employee_mst::whereMonth('created_dt', '=', 7)->whereYear('created_dt', '=', date('Y'))->count();
+        $julyUsers = User::whereMonth('created_at', '=', 7)->whereYear('created_at', '=', date('Y'))->count();
         
         // August
-        $augustUsers = reg_employee_mst::whereMonth('created_dt', '=', 8)->whereYear('created_dt', '=', date('Y'))->count();
+        $augustUsers = User::whereMonth('created_at', '=', 8)->whereYear('created_at', '=', date('Y'))->count();
         
         // September
-        $septemberUsers = reg_employee_mst::whereMonth('created_dt', '=', 9)->whereYear('created_dt', '=', date('Y'))->count();
+        $septemberUsers = User::whereMonth('created_at', '=', 9)->whereYear('created_at', '=', date('Y'))->count();
         
         // October
-        $octoberUsers = reg_employee_mst::whereMonth('created_dt', '=', 10)->whereYear('created_dt', '=', date('Y'))->count();
+        $octoberUsers = User::whereMonth('created_at', '=', 10)->whereYear('created_at', '=', date('Y'))->count();
         
         // November
-        $novemberUsers = reg_employee_mst::whereMonth('created_dt', '=', 11)->whereYear('created_dt', '=', date('Y'))->count();
+        $novemberUsers = User::whereMonth('created_at', '=', 11)->whereYear('created_at', '=', date('Y'))->count();
         
         // December
-        $decemberUsers = reg_employee_mst::whereMonth('created_dt', '=', 12)->whereYear('created_dt', '=', date('Y'))->count();
+        $decemberUsers = User::whereMonth('created_at', '=', 12)->whereYear('created_at', '=', date('Y'))->count();
      
         
 

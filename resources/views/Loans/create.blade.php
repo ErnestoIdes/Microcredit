@@ -1,4 +1,10 @@
-	@include('top_menu') 
+@if(Auth::user()->type=='Admin')
+    @include('admin_top_menu')
+@endif
+
+@if(Auth::user()->type=='Employee')
+    @include('top_menu')
+@endif
 	<x-guest-layout>
 		<center>
 			<h5>REQUEST LOAN</h5>

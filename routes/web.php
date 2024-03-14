@@ -21,11 +21,14 @@ use App\Http\Controllers\AdminsProfileController;
 use App\Http\Controllers\CustomerProfileController;
 
 use App\Http\Controllers\RegisteredUsersController;
+use App\Http\Controllers\ParcelsController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LoansController;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +40,15 @@ use App\Http\Controllers\LoansController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/','App\Http\Controllers\HomeController@index');
 
  Route::get('user_login','App\Http\Controllers\Auth\LoginController@index');
  Route::post('user_login','App\Http\Controllers\Auth\LoginController@login');
  Route::post('user_logout','App\Http\Controllers\Auth\LoginController@logout');
+
+ ## Admin Dashboard
+Route::get('/admindashboard', [AdminDashboardController::class,'dashboard'])
+->name('admindashboard');// ->middleware(['auth','admin'])
     
 ## Regisered Users - CRUD - 
 // Route::resource('users', RegisteredUsersController::class);
@@ -80,6 +88,10 @@ Route::namespace('App\Http\Controllers')->prefix('clients')->middleware(['auth']
 
 Route::namespace('App\Http\Controllers')->prefix('loans')->middleware(['auth'])->group(function () {
      Route::get('index','LoansController@index')->name("loans.index");
+
+     Route::get('approved','LoansController@approved_view')->name("loans.approved");
+     Route::get('rejected','LoansController@rejected_view')->name("loans.rejected");
+     Route::get('awaiting','LoansController@awaiting_view')->name("loans.awaiting");
     // Route::get('show/{user_id}','RegisteredUsersController@show')->name("users.show");
     // Route::get('list','RegisteredUsersController@list')->name('users.list');
     Route::get('create/{user_id}','LoansController@create')->name("loans.create");
@@ -92,28 +104,47 @@ Route::namespace('App\Http\Controllers')->prefix('loans')->middleware(['auth'])-
     // Route::get('active/{user_id}','RegisteredUsersController@active')->name('users.active');
     // Route::get('profile','RegisteredUsersController@profile')->name('users.profile');
 
+    Route::get('approve/{loan_id}', 'LoansController@approve')->name("loans.approve");
+    Route::get('reject/{loan_id}', 'LoansController@reject')->name("loans.reject");
+
+    Route::get('print_contract','LoansController@print_contract')->name('loans.print_contract');
+     Route::get('get_approved','LoansController@approved')->name("loans.get_approved");
+     Route::get('get_rejected','LoansController@rejected')->name("loans.get_rejected");
+     Route::get('get_awaiting','LoansController@awaiting')->name("loans.get_awaiting");
+
     
     ## Retrieve all loans via AJAX 
     Route::get('/all_applied_loans', 'LoansController@loan_history')->name('all_applied_loans'); 
 
 });
 
+Route::namespace('App\Http\Controllers')->prefix('parcels')->middleware(['auth'])->group(function () {
+    Route::get('getParcels/{loan_id}','ParcelsController@getParcels')->name("parcels.getParcels");
+    Route::post('Pay','ParcelsController@pay')->name("parcels.pay");
+});
+
+Route::namespace('App\Http\Controllers')->prefix('documents')->middleware(['auth'])->group(function () {
+    Route::get('printContract/{loan_id}','PdfController@printContract')->name("documents.contract");
+    
+});
 
 
-// Route::group(['prefix' => 'clients'], function () {
-//     Route::get('index','App\Http\Controllers\ClientsController@index')->name("clients.index");
-//     Route::get('show/{user_id}','App\Http\Controllers\ClientsController@show')->name("clients.show");
-//     Route::get('list','App\Http\Controllers\ClientsController@list')->name('clients.list');
-//     Route::get('register','App\Http\Controllers\ClientsController@create')->name("clients.register");
 
-//     Route::post('store', 'App\Http\Controllers\ClientsController@store')->name("clients.store");
-//     // Route::get('logout', 'Auth\AuthController@getLogout');
-//     Route::get('edit/{user_id}','App\Http\Controllers\ClientsController@edit')->name('clients.edit');
-//     Route::get('update/{user_id}','App\Http\Controllers\ClientsController@update')->name('clients.update');
-//     Route::get('delete/{user_id}','App\Http\Controllers\ClientsController@delete')->name('clients.delete');
-//     Route::get('active/{user_id}','App\Http\Controllers\ClientsController@active')->name('clients.active');
-//     Route::get('profile','App\Http\Controllers\ClientsController@profile')->name('clients.profile');
-// });
+
+
+
+
+
+## get todays payments
+Route::get('todays_payments', [TodaysPaymentsController::class,'index'])
+->name('todays_payments');  
+
+
+## get all todays payments via Ajax
+Route::get('all_todays_payments', [TodaysPaymentsController::class,'todays_payments'])
+->name('all_todays_payments');  
+
+
 
 //populator routes
 Route::get('provinces', 'App\Http\Controllers\ProvinceController@getProvinces')->name('get.provinces');
@@ -407,16 +438,6 @@ Route::get('all_incoming_payments', [IncomingPaymentsController::class,'incoming
 
 
 
-## get todays payments
-Route::get('todays_payments', [TodaysPaymentsController::class,'index'])
-->middleware('auth','permission:can-check-todays-payments')
-->name('todays_payments');  
-
-
-## get all todays payments via Ajax
-Route::get('all_todays_payments', [TodaysPaymentsController::class,'todays_payments'])
-->middleware('auth','permission:can-check-todays-payments')
-->name('all_todays_payments');  
 
 
 
@@ -479,19 +500,12 @@ Route::fallback(function () {
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 ## Employees Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-## Admin Dashboard
-Route::get('/admindashboard', [AdminDashboardController::class,'dashboard'])
-->middleware(['auth','admin'])
-->name('admindashboard');
+
 
 
 require __DIR__.'/auth.php';

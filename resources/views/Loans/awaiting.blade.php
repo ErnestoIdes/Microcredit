@@ -5,7 +5,6 @@
 @if(Auth::user()->type=='Employee')
     @include('top_menu')
 @endif
-
 <table class="table" id="all_applied_loans" class="col-sm-12">
   <thead>
     <tr style="width: auto;">
@@ -25,6 +24,7 @@
     
   </tbody>
 </table>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
@@ -50,7 +50,7 @@
         "lengthChange": true,
         scrollX: true,
         dom:'lBfrtip',
-        ajax: "{{ route('all_applied_loans') }}",
+        ajax: "{{ route('loans.get_awaiting') }}",
         columns: [
             {data: 'loan_code', name: 'loan_code'},
             {data: 'amount', name: 'amount'},

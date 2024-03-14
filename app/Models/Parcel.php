@@ -19,6 +19,10 @@ class Parcel extends Model
         'amount_to_pay',
         'due_date'
     ];
+
+    protected $casts = [
+    'id' => 'string'
+];
 // Override boot method to generate UUID for primary key
     protected static function boot()
     {

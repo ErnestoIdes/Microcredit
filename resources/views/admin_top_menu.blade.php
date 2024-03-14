@@ -99,13 +99,13 @@
 				
 					<li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('users.index')}}">
-              <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">List</span>
+              <i class="align-middle fas fa-users" ></i> <span class="align-middle" style="color:white">List</span>
             </a>					
 					</li>
 
 				<li class="sidebar-item no-permission">
                     <a class="sidebar-link" href="{{route('users.register')}}">
-              <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">New</span>
+              <i class="align-middle fas fa-users" ></i> <span class="align-middle" style="color:white">New</span>
             </a>					
 					</li>
 
@@ -126,64 +126,6 @@
               <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">New</span>
             </a>					
 					</li>
-	
-	
-
-
-
-	<li class="sidebar-header" style="font-size:14px;font-weight:bold">
-						Others
-					</li>
-
-					@can('can-view-emails')
-                    <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('emailsub')}}">
-              <i class="align-middle fas fa-envelope" ></i> <span class="align-middle" style="color:white">Email Subscribers</span>
-            </a>					
-					</li>
-					@else
-                    
-       <li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('emailsub')}}">
-              <i class="align-middle fas fa-envelope" ></i> <span class="align-middle" style="color:white">Email Subscribers</span>
-            </a>					
-					</li>             
-                    
-         @endcan
-         
-         @can('can-view-messages')                   
-
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('messages')}}">
-              <i class="align-middle fas fa-sms" ></i> <span class="align-middle" style="color:white">Messages</span>
-            </a>
-				</li>
-                
-                @else
-           <li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('messages')}}">
-              <i class="align-middle fas fa-sms" ></i> <span class="align-middle" style="color:white">Messages</span>
-            </a>
-				</li>            
-
-@endcan
-
-
-<!-- @can('can-view-registered-users') -->
-					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('users.index')}}">
-              <i class="align-middle fas fa-users" ></i> <span class="align-middle" style="color:white">Registered Users</span>
-            </a>					
-					</li>
-					@else
-					<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('users.index')}}">
-              <i class="align-middle fas fa-users" ></i> <span class="align-middle" style="color:white">Registered Users</span>
-            </a>					
-					</li>
-<!-- @endcan -->
-
 
 
 					<li class="sidebar-header" style="font-size:14px;font-weight:bold">
@@ -191,233 +133,33 @@
 					</li>
 
 					
-					<!-- @can('can-view-active-loans')	 -->
+				
 					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('active_loans')}}">
-              <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">Active Loans</span>
+                    <a class="sidebar-link" href="{{route('loans.index')}}">
+              <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">List</span>
             </a>					
 					</li>
-<!-- @else -->
-<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('active_loans')}}">
+
+				<li class="sidebar-item">
+                    <a class="sidebar-link" href="{{route('loans.approved')}}">
               <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">Active Loans</span>
             </a>					
-					</li>
-	<!-- 				@endcan
+					</li>		
 
-
-					@can('can-view-denied-loans') -->
 					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('denied_loans')}}">
+                    <a class="sidebar-link" href="{{route('loans.awaiting')}}">
+              <i class="align-middle fas fa-clock-o" ></i> <span class="align-middle" style="color:white">Pending Loans</span>
+            </a>					
+					</li>			
+
+					<li class="sidebar-item">
+                    <a class="sidebar-link" href="{{route('loans.rejected')}}">
               <i class="align-middle fas fa-ban" ></i> <span class="align-middle" style="color:white">Denied Loans</span>
             </a>					
 					</li>
-					<!-- @else -->
+	
+	
 
-					<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('denied_loans')}}">
-              <i class="align-middle fas fa-ban" ></i> <span class="align-middle" style="color:white">Denied Loans</span>
-            </a>					
-					</li>
-
-
-		<!-- 			@endcan
-
-
-					@can('can-view-pending-loans') -->
-					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('pending_loans')}}">
-              <i class="align-middle fas fa-clock-o" ></i> <span class="align-middle" style="color:white">Pending Loans</span>
-            </a>					
-					</li>
-					<!-- @else -->
-
-					<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('pending_loans')}}">
-              <i class="align-middle fas fa-clock-o" ></i> <span class="align-middle" style="color:white">Pending Loans</span>
-            </a>					
-					</li>
-		<!-- 			@endcan
-
-
-@can('can-make-payments-update') -->
-					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('payments.create')}}">
-              <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">Payments updates</span>
-            </a>					
-					</li>
-					<!-- @else -->
-					<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('payments.create')}}">
-              <i class="align-middle fas fa-money" ></i> <span class="align-middle" style="color:white">Payments updates</span>
-            </a>					
-					</li>
-<!-- 					@endcan
-
-
-					@can('can-view-loan-agreement-forms') -->
-
-					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('downloading_loan_agreement_forms')}}">
-              <i class="align-middle fas fa-copy" ></i> <span class="align-middle" style="color:white">Loan Agreement Forms</span>
-            </a>					
-					</li> 
-					<!-- @else -->
-
-					<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('downloading_loan_agreement_forms')}}">
-              <i class="align-middle fas fa-copy" ></i> <span class="align-middle" style="color:white">Loan Agreement Forms</span>
-            </a>					
-					</li> 
-					<!-- @endcan -->
-				
-
-				
-			<li class="sidebar-header" style="font-size:14px;font-weight:bold">
-						My Approvals
-					</li>
-					<!-- @can('dlo') -->
-					<li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('loan_approvals.index')}}">
-              <i class="align-middle fas fa-check" ></i> <span class="align-middle" style="color:white">Review Loans - DLO</span>
-            </a>
-					</li>
-					<!-- @else -->
-					<li class="sidebar-item no-permission">
-                    <a class="sidebar-link" href="{{route('loan_approvals.index')}}">
-              <i class="align-middle fas fa-check" ></i> <span class="align-middle" style="color:white">Review Loans - DLO</span>
-            </a>
-					</li>
-					<!-- @endcan -->
-
-
-<!-- @can('cfo') -->
-			<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('review')}}">
-              <i class="align-middle fas fa-copy" ></i> <span class="align-middle" style="color:white">Review Loans - CFO</span>
-            </a>
-					</li>
-					<!-- @else -->
-
-					<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('review')}}">
-              <i class="align-middle fas fa-copy" ></i> <span class="align-middle" style="color:white">Review Loans - CFO</span>
-            </a>
-					</li>
-
-
-<!-- 					@endcan
-
-					@can('can-approve-loan-applications') -->
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('reviewed_loans')}}">
-              <i class="align-middle fas fa-copy" ></i> <span class="align-middle" style="color:white">Review Loans - ADMIN</span>
-            </a>
-					</li>
-					<!-- @else -->
-					<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('reviewed_loans')}}">
-              <i class="align-middle fas fa-copy" ></i> <span class="align-middle" style="color:white">Review Loans - ADMIN</span>
-            </a>
-					</li>
-<!-- 					@endcan
-
-					@can('can-upload-settlements') -->
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('settlements.create')}}">
-              <i class="align-middle fas fa-upload" ></i> <span class="align-middle" style="color:white">Upload Settlements</span>
-            </a>
-					</li>
-					<!-- @else -->
-
-<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('settlements.create')}}">
-              <i class="align-middle fas fa-upload" ></i> <span class="align-middle" style="color:white">Upload Settlements</span>
-            </a>
-					</li>
-					<!-- @endcan -->
-
-
-
-<!-- @can('can-add-roles') -->
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('roles.create')}}">
-              <i class="align-middle fas fa-user-plus" ></i> <span class="align-middle" style="color:white">Roles</span>
-            </a>
-					</li>
-
-<!-- @else -->
-<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('roles.create')}}">
-              <i class="align-middle fas fa-user-plus" ></i> <span class="align-middle" style="color:white">Roles</span>
-            </a>
-					</li>
-		<!-- 			@endcan
-
-
-					@can('can-give-permissions') -->
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('roles_permissions.create')}}">
-              <i class="align-middle fas fa fa-plus-square" ></i> <span class="align-middle" style="color:white">Permissions</span>
-            </a>
-					</li>
-					<!-- @else -->
-					<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('roles_permissions.create')}}">
-              <i class="align-middle fas fa fa-plus-square" ></i> <span class="align-middle" style="color:white">Permissions</span>
-            </a>
-					</li>
-<!-- 					@endcan
-
-@can('can-give-roles-to-users') -->
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('roles_users.create')}}">
-              <i class="align-middle fas fa fa-user" ></i> <span class="align-middle" style="color:white">Users</span>
-            </a>
-					</li>
-					<!-- @else -->
-
-					<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('roles_users.create')}}">
-              <i class="align-middle fas fa fa-user" ></i> <span class="align-middle" style="color:white">Users</span>
-            </a>
-					</li>
-
-		<!-- 			@endcan
-
-
-
-					@can('can-revoke-roles') -->
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('roles_users.remove')}}">
-              <i class="align-middle fas fa fa-ban" ></i> <span class="align-middle" style="color:white">Revoke Roles </span>
-            </a>
-					</li>
-					<!-- @else -->
-					<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('roles_users.remove')}}">
-              <i class="align-middle fas fa fa-ban" ></i> <span class="align-middle" style="color:white">Revoke Roles </span>
-            </a>
-					</li>
-			<!-- 		@endcan
-
-
-					@can('can-check-permissions') -->
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{route('view_all_permissions')}}">
-              <i class="align-middle fas fa-eye" ></i> <span class="align-middle" style="color:white">Users with Permissions</span>
-            </a>
-					</li>
-					<!-- @else -->
-					<li class="sidebar-item no-permission">
-						<a class="sidebar-link" href="{{route('view_all_permissions')}}">
-              <i class="align-middle fas fa-eye" ></i> <span class="align-middle" style="color:white">Users with Permissions</span>
-            </a>
-					</li>
-<!-- 
-					@endcan
 			
 					
 					@can('can-send-text') -->
@@ -455,7 +197,7 @@
 <center>
 					<li class="sidebar-item">
    <!-- Log Out -->
-   <form method="POST" action="/user_logout">
+   <form method="POST" action="{{ route('logout') }}">
                             @csrf
                    <button class="btn btn-danger">Log Out</button> 
                            
@@ -466,17 +208,7 @@
 					</li>
 				</ul>
 
-				<div class="sidebar-cta">
-					<div class="sidebar-cta-content">
-						<strong class="d-inline-block mb-2">Download our Android App</strong>
-						<div class="mb-3 text-sm">
-							Are you looking for a mobile app component? Download it for free here.
-						</div>
-						<div class="d-grid">
-							<a href="" class="btn btn-primary">Download</a>
-						</div>
-					</div>
-				</div>
+				
 			</div>
 		</nav>
 

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use DataTables;
 use DateTime;
 
-class LoansController extends Controller
+class SimulationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -340,11 +340,10 @@ class LoansController extends Controller
           $parcel_date=$request->parcel_date;       
         
             $loan = new Loan; 
-            $loan->loan_code="L".date('y').date('m').date('d').date('s').date('m');
+            $loan->loan_code="L".date('y').date('m').date('d').date('s').date('m');;
             $loan->state='Under Review';          
             $loan->rate=$credit_rate;
             $loan->amount=$amount;            
-            $loan->client_code=$user_id;            
             // $loan->amount_paid=;
             $loan->amount_to_pay=$amount_to_pay;
             $loan->type='Loan';

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\web_loan_application;
-use App\Models\transactionHistory;
-use App\Models\reg_employee_mst;
+use App\Models\Loan;
+use App\Models\parcel;
+use App\Models\User;
 use Carbon\Carbon;
 use DataTables;
 class TodaysPaymentsController extends Controller
@@ -14,9 +14,10 @@ class TodaysPaymentsController extends Controller
 
 
     public function index(){
-    
+
+        
         return view('TodaysPayments.index');
-               } 
+    } 
     
     
     
@@ -31,57 +32,47 @@ class TodaysPaymentsController extends Controller
          * @return \Illuminate\Http\RedirectResponse
          */
     
-         public function todays_payments(){
+    public function todays_payments(){
 
-            // Get today's date
-    $today = Carbon::today();
+        $data = Parcel::whereDate('parcels.created_at', Carbon::today())
+         ->join('loans', 'loans.loan_code', '=', 'parcels.loan_id')
+         ->join('users', 'users.code', '=', 'loans.client_code')
+          ->select('parcels.amount_to_pay','parcels.created_at', 'users.*')
+         ->get();
 
-    // Calculate the date 30 days ago
-    $thirtyDaysAgo = $today->subDays(30);
+     
+        return Datatables::of($data)
+        ->addIndexColumn()  
+        ->addColumn('name', function($data){
+            return $data->firstname. ' '.$data->lastname;
+        })  
+        ->addColumn('phone', function($data){
+            return $data->phone;
+        })  
+         ->addColumn('email', function($data){
+            return $data->email;
+        })  
 
+         ->addColumn('amount_to_pay', function($data){
+            return $data->amount_to_pay;
+        })  
+       
+        ->addColumn('last_payment_date', function($data){
+         return date('j, F-Y',strtotime($data->updated_at));
+     })   
 
-
-
-
-            $data = transactionHistory::where('balance_due',">",0 )->where('updated_at', '=', $thirtyDaysAgo)->get();
-            
-            //
-
-
-
-                return Datatables::of($data)
-                    ->addIndexColumn()  
-                    ->addColumn('name', function($data){
-                        $loan = web_loan_application::where('loan_number',"=",$data->loan_number)->first();
-                        $user = reg_employee_mst::find($loan->employee_id);
-                        return $user->firstname. ' '.$user->lastname;
-                    })  
-                    ->addColumn('phone', function($data){
-                        $loan = web_loan_application::where('loan_number',"=",$data->loan_number)->first();
-                        $user = reg_employee_mst::find($loan->employee_id);
-                        return $user->phone;
-                    })  
-                    ->addColumn('email', function($data){
-                        $loan = web_loan_application::where('loan_number',"=",$data->loan_number)->first();
-                        $user = reg_employee_mst::find($loan->employee_id);
-                        return $user->email;
-                    })  
-                    ->addColumn('last_payment_date', function($data){
-                       return date('j, F-Y',strtotime($data->updated_at));
-                    })   
-                  
-                     ->addColumn('balance_due', function($data){
-                        $loan = web_loan_application::where('loan_number',"=",$data->loan_number)->first();
-                        return $loan->emi;
-                     })   
+        ->addColumn('balance_due', function($data){
+            $loan = Loan::where('loan_code',"=",$data->loan_code)->first();
+            return (float)$data->amount_to_pay-(float)$data->amount_paid;
+        })   
 
 
-                    
-                     
-                    ->rawColumns(['name','phone','email','last_payment_date','balance_due'])
-                    ->make(true);
-        }
-        
+
+
+        ->rawColumns(['name','phone','email','parcel_amount','last_payment_date','balance_due'])
+        ->make(true);
+    }
+
     
     
 }

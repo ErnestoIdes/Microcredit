@@ -5,8 +5,9 @@
       <th scope="col">Name</th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
+      <th scope="col">Amount</th>
       <th scope="col">Last Payment</th>
-      <th scope="col">Balance Due</th>
+      <!-- <th scope="col">Balance Due</th> -->
      
     </tr>
   </thead>
@@ -44,8 +45,9 @@
             {data: 'name', name: 'name'},
             {data: 'phone', name: 'phone'},
             {data: 'email', name: 'email'},
+            {data: 'amount_to_pay', name: 'amount_to_pay'},
             {data: 'last_payment_date', name: 'last_payment_date'},
-            {data: 'balance_due', name: 'balance_due'},
+            // {data: 'balance_due', name: 'balance_due'},
                        
            
                    ],

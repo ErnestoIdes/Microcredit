@@ -16,7 +16,11 @@ class CreateLoans extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('loan_code');
-             $table->enum('state', ['Rejected', 'Approved','Under Review']);          
+            $table->enum('state', ['Rejected', 'Approved','Under Review'])->default('Under Review');     
+            $table->enum('type', ['Loan', 'Simulation']);     
+            $table->string('decided_by');     
+            $table->timestamp('decided_at');     
+            $table->string('client_code');     
             $table->string('rate');
             $table->string('amount');            
             $table->string('amount_paid');

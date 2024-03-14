@@ -48,6 +48,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Male',
                 'marital_status' => 'Single',
                 'is_blacklisted' => false,
+                'type'=>'Admin',
                 'province_id' => 1,
                 'district_id' => 1,
                 'address' => 'guava-Marracuene',
